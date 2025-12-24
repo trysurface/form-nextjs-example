@@ -1,5 +1,4 @@
 import Script from "next/script";
-import SurfaceFormScript from "./SurfaceFormScript";
 import "./globals.css";
 
 export default function RootLayout({
@@ -15,15 +14,23 @@ export default function RootLayout({
           data-site-id="SITE_ID" // Replace this with your Site ID
           strategy="beforeInteractive"
         />
+         <Script
+          strategy="afterInteractive"
+          id="surface-form-script"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                const surface_src = "REPLACE ME WITH FORM URL"
+                const surface_embed_type = "popup"
+                const target_element_class = "surface-form-button"
+                const c = new SurfaceEmbed(surface_src, surface_embed_type, target_element_class)
+              })();
+            `,
+          }}
+        />
       </head>
       <body>
         {children}
-        <SurfaceFormScript
-          formUrl="REPLACE ME WITH FORM URL" // Replace this with a Surface Form URL
-          embedType="popup"
-          popupSize="medium"
-          buttonClassName="surface-form-button"
-        />
       </body>
     </html>
   );
